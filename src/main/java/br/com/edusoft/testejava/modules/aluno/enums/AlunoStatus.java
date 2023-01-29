@@ -21,4 +21,17 @@ public enum AlunoStatus {
 				throw new InvalidAlunoStatusException(this);
 		}
 	}
+
+	public String getDisplayText() {
+		switch (this) {
+			case APROVADO:
+				return "Aprovado(a)";
+			case REPROVADO_FREQUENCIA:
+				return "Reprovado(a) por frequência";
+			case REPROVADO_MEDIA:
+				return "Reprovado(a) por média";
+			default:
+				throw new InvalidAlunoStatusException(this);
+		}
+	}
 }
