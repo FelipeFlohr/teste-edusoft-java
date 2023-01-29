@@ -20,14 +20,13 @@ public class AlunoEntityImpl implements IAlunoEntity {
 
 	@Override
 	public double getMedia(Aluno aluno) {
-		final int totalAulas = aluno.getTotalAulas();
 		final double notasAgregadas = aluno.getNota()
 				.stream()
 				.map(nota -> nota.getNota())
 				.reduce((prev, curr) -> prev + curr)
 				.get();
 
-		final double media = notasAgregadas / totalAulas;
+		final double media = notasAgregadas / aluno.getNota().size();
 		return media;
 	}
 

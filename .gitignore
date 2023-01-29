@@ -37,16 +37,12 @@ out/
 *.iws
 
 # Eclipse
-.settings/
 bin/
 tmp/
 *.tmp
 *.bak
 *.swp
 *~.nib
-local.properties
-.loadpath
-.factorypath
 
 # NetBeans
 nbproject/private/

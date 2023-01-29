@@ -8,6 +8,7 @@ import com.google.inject.Singleton;
 
 import br.com.edusoft.testejava.modules.env.IEnvironmentSettings;
 import br.com.edusoft.testejava.modules.env.config.EnvironmentSettingsConfig;
+import br.com.edusoft.testejava.modules.env.config.TesteRealizanteConfig;
 import br.com.edusoft.testejava.modules.env.config.TokenGenerationConfig;
 import br.com.edusoft.testejava.modules.env.exceptions.NullPropertyException;
 import br.com.edusoft.testejava.modules.env.exceptions.PropertiesNotFoundException;
@@ -33,8 +34,9 @@ public class EnvironmentSettingsImpl implements IEnvironmentSettings {
 
 	private EnvironmentSettingsConfig generateConfig() {
 		final TokenGenerationConfig tokenGeneration = new TokenGenerationConfig(this.getStrProp("TOKEN_GENERATION_USUARIO"), this.getStrProp("TOKEN_GENERATION_SENHA"));
+		final TesteRealizanteConfig testeRealizante = new TesteRealizanteConfig(this.getStrProp("TESTE_REALIZANTE_NOME"));
 
-		final EnvironmentSettingsConfig res = new EnvironmentSettingsConfig(tokenGeneration);
+		final EnvironmentSettingsConfig res = new EnvironmentSettingsConfig(tokenGeneration, testeRealizante);
 		return res;
 	}
 
