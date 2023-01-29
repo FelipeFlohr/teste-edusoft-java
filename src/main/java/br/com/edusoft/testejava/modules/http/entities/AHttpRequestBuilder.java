@@ -3,6 +3,7 @@ package br.com.edusoft.testejava.modules.http.entities;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.common.reflect.TypeToken;
@@ -16,7 +17,7 @@ import okhttp3.Request;
 import okhttp3.Request.Builder;
 import okhttp3.Response;
 
-public abstract class AHttpRequestBuilder {
+public abstract class AHttpRequestBuilder implements IHttpRequestBuilder {
 	protected final Map<String, String> headers;
 	protected final Builder request;
 	protected final String url;
@@ -31,20 +32,24 @@ public abstract class AHttpRequestBuilder {
 		this.finished = false;
 	}
 
+	@Override
 	public AHttpRequestBuilder addHeader(String key, String value) {
 		this.headers.put(key, value);
 		return this;
 	}
 
+	@Override
 	public AHttpRequestBuilder addHeaders(Map<String, String> headers) {
 		this.headers.putAll(headers);
 		return this;
 	}
 
+	@Override
 	public void call() {
 		callHandler();
 	}
 
+	@Override
 	public Map<String, Object> callJsonResponse() {
 		final var response = callHandler();
 		final var body = response.body();
@@ -53,17 +58,18 @@ public abstract class AHttpRequestBuilder {
 			final String stringJson = body.string();
 
 			Gson gson = new Gson();
-			final Type type = new TypeToken<Map<String, Object>>(){
+			final Type type = new TypeToken<List<Map<String, Object>>>(){
 				private static final long serialVersionUID = 1L;
 			}.getType();
 
-			Map<String, Object> map = gson.fromJson(stringJson, type);
-			return map;
+			List<Map<String, Object>> map = gson.fromJson(stringJson, type);
+			return map.get(0);
 		} catch (IOException e) {
 			throw new FailedToParseBodyException(url, body);
 		}
 	}
 
+	@Override
 	public String callStringResponse() {
 		final var response = callHandler();
 
