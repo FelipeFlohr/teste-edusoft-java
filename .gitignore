@@ -1,3 +1,6 @@
+# Custom
+src/main/resources/application.properties
+
 # Java
 .mtj.tmp/
 *.class
