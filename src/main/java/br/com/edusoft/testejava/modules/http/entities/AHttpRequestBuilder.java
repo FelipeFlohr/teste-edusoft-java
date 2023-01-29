@@ -1,7 +1,8 @@
-package br.com.edusoft.testejava.modules.http.post.services.impl;
+package br.com.edusoft.testejava.modules.http.entities;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.google.common.reflect.TypeToken;
@@ -10,67 +11,49 @@ import com.google.gson.Gson;
 import br.com.edusoft.testejava.modules.http.exceptions.CalledOnFinishedRequestException;
 import br.com.edusoft.testejava.modules.http.exceptions.FailedHttpRequestException;
 import br.com.edusoft.testejava.modules.http.exceptions.FailedToParseBodyException;
-import br.com.edusoft.testejava.modules.http.post.services.IHttpPostService;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Request.Builder;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class HttpPostServiceImpl implements IHttpPostService {
+public abstract class AHttpRequestBuilder {
+	protected final Map<String, String> headers;
+	protected final Builder request;
+	protected final String url;
 	private final OkHttpClient client;
-	private final Builder request;
-	private RequestBody body;
 	private boolean finished;
 
-	HttpPostServiceImpl() {
-		this.finished = false;
+	public AHttpRequestBuilder(String url) {
+		this.headers = new HashMap<>();
+		this.url = url;
 		this.client = new OkHttpClient();
 		this.request = new Request.Builder();
+		this.finished = false;
 	}
 
-	@Override
-	public IHttpPostService addHeader(String key, String value) {
-		request.addHeader(key, value);
+	public AHttpRequestBuilder addHeader(String key, String value) {
+		this.headers.put(key, value);
 		return this;
 	}
 
-	@Override
-	public IHttpPostService addHeaders(Map<String, String> headers) {
-		headers.forEach((k, v) -> {
-			this.addHeader(k, v);
-		});
+	public AHttpRequestBuilder addHeaders(Map<String, String> headers) {
+		this.headers.putAll(headers);
 		return this;
 	}
 
-	@Override
-	public IHttpPostService setBody(Map<String, Object> body) {
-		Gson gson = new Gson();
-		String json = gson.toJson(body);
-
-		@SuppressWarnings("deprecation")
-		RequestBody reqBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json);
-		this.body = reqBody;
-
-		return this;
+	public void call() {
+		callHandler();
 	}
 
-	@Override
-	public void call(String url) {
-		callHandler(url);
-	}
-
-	@Override
-	public Map<String, Object> callJsonResponse(String url) {
-		final var response = callHandler(url);
-
+	public Map<String, Object> callJsonResponse() {
+		final var response = callHandler();
 		final var body = response.body();
+
 		try {
 			final String stringJson = body.string();
 
 			Gson gson = new Gson();
-			final Type type = new TypeToken<Map<String, Object>>() {
+			final Type type = new TypeToken<Map<String, Object>>(){
 				private static final long serialVersionUID = 1L;
 			}.getType();
 
@@ -81,9 +64,8 @@ public class HttpPostServiceImpl implements IHttpPostService {
 		}
 	}
 
-	@Override
-	public String callStringResponse(String url) {
-		final var response = callHandler(url);
+	public String callStringResponse() {
+		final var response = callHandler();
 
 		final var body = response.body();
 		try {
@@ -95,18 +77,21 @@ public class HttpPostServiceImpl implements IHttpPostService {
 		}
 	}
 
-	private Response callHandler(String url) {
+	protected abstract Request buildRequest();
+
+	private Response callHandler() {
 		if (finished) {
 			throw new CalledOnFinishedRequestException(url);
 		}
 
-		@SuppressWarnings("deprecation")
-		final var finalRequest = this.body == null
-				? this.request.url(url).post(RequestBody.create(null, new byte[] {})).build()
-				: this.request.url(url).post(this.body).build();
+		this.headers.forEach((k, v) -> {
+			this.request.addHeader(k, v);
+		});
+
+		final var finalRequest = this.buildRequest();
 
 		try {
-			Response response = client.newCall(finalRequest).execute();
+			Response response = this.client.newCall(finalRequest).execute();
 			if (!response.isSuccessful()) {
 				throw new FailedHttpRequestException(url, response.code());
 			}
