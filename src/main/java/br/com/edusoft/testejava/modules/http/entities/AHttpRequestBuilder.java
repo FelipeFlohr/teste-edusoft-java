@@ -58,12 +58,22 @@ public abstract class AHttpRequestBuilder implements IHttpRequestBuilder {
 			final String stringJson = body.string();
 
 			Gson gson = new Gson();
-			final Type type = new TypeToken<List<Map<String, Object>>>(){
-				private static final long serialVersionUID = 1L;
-			}.getType();
 
-			List<Map<String, Object>> map = gson.fromJson(stringJson, type);
-			return map.get(0);
+			if (stringJson.startsWith("[")) { // Handler para arrays
+				final Type type = new TypeToken<List<Map<String, Object>>>(){
+					private static final long serialVersionUID = 1L;
+				}.getType();
+
+				List<Map<String, Object>> map = gson.fromJson(stringJson, type);
+				return map.get(0);
+			} else {
+				final Type type = new TypeToken<Map<String, Object>>() {
+					private static final long serialVersionUID = 1L;
+				}.getType();
+
+				Map<String, Object> map = gson.fromJson(stringJson, type);
+				return map;
+			}
 		} catch (IOException e) {
 			throw new FailedToParseBodyException(url, body);
 		}

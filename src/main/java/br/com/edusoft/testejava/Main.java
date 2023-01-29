@@ -1,46 +1,32 @@
 package br.com.edusoft.testejava;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 import br.com.edusoft.testejava.container.Container;
-import br.com.edusoft.testejava.modules.aluno.datasources.IFetchAlunos;
-import br.com.edusoft.testejava.modules.aluno.datasources.IFetchGravaResultadoToken;
-import br.com.edusoft.testejava.modules.aluno.entities.IAlunoEntity;
-import br.com.edusoft.testejava.modules.aluno.mappers.GravarResultadoMapper;
-import br.com.edusoft.testejava.modules.aluno.models.ConsultaAlunos;
 import br.com.edusoft.testejava.modules.aluno.models.GravarResultado;
-import br.com.edusoft.testejava.modules.aluno.models.ResultadoAluno;
-import br.com.edusoft.testejava.modules.env.IEnvironmentSettings;
+import br.com.edusoft.testejava.modules.aluno.models.GravarResultadoReturn;
+import br.com.edusoft.testejava.modules.aluno.services.IAlunoService;
+import br.com.edusoft.testejava.utils.logger.ILogger;
+import br.com.edusoft.testejava.utils.logger.LogLevel;
 
 public class Main {
 	public static void main(String[] args) {
 		// Configura o Injector do Guice
 		final Injector injector = Guice.createInjector(new Container());
+		final ILogger logger = injector.getInstance(ILogger.class);
 
-		final IFetchAlunos fetcher = injector.getInstance(IFetchAlunos.class);
-		final IAlunoEntity alunoEntity = injector.getInstance(IAlunoEntity.class);
-		final IEnvironmentSettings envSettings = injector.getInstance(IEnvironmentSettings.class);
+		logger.warn("Início da aplicação");
 
-		final ConsultaAlunos consultaAlunos = fetcher.fetchAlunos();
-		final List<ResultadoAluno> resultadoAluno = new ArrayList<>();
+		final IAlunoService alunoService = injector.getInstance(IAlunoService.class);
 
-		consultaAlunos.getAlunos()
-			.forEach(aluno -> {
-				final ResultadoAluno res = new ResultadoAluno();
-				res.setCodAluno(aluno.getCod());
-				res.setMedia(alunoEntity.getMedia(aluno));
-				res.setResultado(alunoEntity.getAlunoStatus(aluno));
-				res.setSeuNome(envSettings.getConfig().getTesteRealizante().getNome());
+		logger.warn("Obtendo o resultado...");
+		final GravarResultado gravarResultado = alunoService.gerarGravarResultado();
+		logger.okay("Resultado obtido.");
 
-				resultadoAluno.add(res);
-			});
-
-		final GravarResultado gravarResultado = new GravarResultado(resultadoAluno);
-		final String jsonGravarResultado = GravarResultadoMapper.toStringJson(gravarResultado);
-		System.out.println(jsonGravarResultado);
+		logger.warn("Fazendo o POST do resultado...");
+		final GravarResultadoReturn gravarResultadoReturn = alunoService.postGravarResultado(gravarResultado);
+		logger.log("Feito o POST do resultado. Linhas alteradas: " + gravarResultadoReturn.getLinhasAfetadas(), gravarResultadoReturn.getLinhasAfetadas() == 3 ? LogLevel.OKAY : LogLevel.WARN);
+		logger.warn("Encerrando aplicação...");
 	}
 }
