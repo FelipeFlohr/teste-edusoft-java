@@ -16,4 +16,9 @@ public class TokenGenerationConfig {
 	public String getSenha() {
 		return senha;
 	}
+
+	@Override
+	public String toString() {
+		return "TokenGenerationConfig [usuario=" + usuario + ", senha=" + senha + "]";
+	}
 }

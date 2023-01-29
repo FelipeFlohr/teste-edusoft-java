@@ -1,7 +1,0 @@
-# Um arquivo chamado "application.properties" deverá ser
-# criado se espelhando nesse arquivo
-
-TOKEN_GENERATION_USUARIO=nome do usuario para geração de token
-TOKEN_GENERATION_SENHA=senha do usuario para geração de token
-
-FETCH_ALUNOS_TOKEN=token para a consulta de alunos
