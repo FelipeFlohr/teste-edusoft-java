@@ -6,6 +6,8 @@ public class Nota {
 	private int faltas;
 	private double nota;
 
+	public Nota() {}
+
 	public Nota(int faltas, double nota) {
 		this.faltas = faltas;
 		this.nota = nota;

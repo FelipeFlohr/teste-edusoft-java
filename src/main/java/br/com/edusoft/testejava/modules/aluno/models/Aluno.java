@@ -9,6 +9,15 @@ public class Aluno {
 	private int totalAulas;
 	private List<Nota> nota;
 
+	public Aluno() {}
+
+	public Aluno(int cod, String nome, int totalAulas, List<Nota> nota) {
+		this.cod = cod;
+		this.nome = nome;
+		this.totalAulas = totalAulas;
+		this.nota = nota;
+	}
+
 	public int getCod() {
 		return cod;
 	}

@@ -1,4 +1,4 @@
-package br.com.edusoft.testejava.module;
+package br.com.edusoft.testejava.container;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,7 +17,7 @@ import com.google.inject.Injector;
 import com.google.inject.Singleton;
 
 @TestInstance(value = Lifecycle.PER_CLASS)
-class ModuleTest {
+class ContainerTest {
 	Injector injector;
 
 	@BeforeAll

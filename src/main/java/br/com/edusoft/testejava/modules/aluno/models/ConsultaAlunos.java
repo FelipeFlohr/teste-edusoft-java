@@ -7,6 +7,13 @@ public class ConsultaAlunos {
 	private String resultado;
 	private List<Aluno> alunos;
 
+	public ConsultaAlunos() {}
+
+	public ConsultaAlunos(String resultado, List<Aluno> alunos) {
+		this.resultado = resultado;
+		this.alunos = alunos;
+	}
+
 	public String getResultado() {
 		return resultado;
 	}
