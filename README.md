@@ -18,7 +18,7 @@ Para rodar a aplicação sem Docker, você precisará dos seguintes itens:
 
 Após isso, siga os seguintes passos:
 1. Abra o Eclipse na pasta raíz desse repositório
-2. Crie um arquivo chamado ***application.properties*** e coloque-o no diretório "*src/main/resources*". Nele, você deverá preencher as informações de autentição espelhando-se no arquivo "*[application.properties.sample](./src/main/resources/application.properties.sample)*", localizado em "*src/main/resources/application.properties.sample*"
+2. Crie um arquivo chamado ***application.properties*** e coloque-o no diretório "*src/main/resources*". Nele, você deverá preencher as informações de autenticação espelhando-se no arquivo "*[application.properties.sample](./src/main/resources/application.properties.sample)*", localizado em "*src/main/resources/application.properties.sample*"
 3. Instale as dependências do Maven
 4. Execute o arquivo [Main](./src/main/java/br/com/edusoft/testejava/Main.java) localizado em "*src/main/java/br/com/edusoft/testejava/Main.java*".
 
@@ -30,3 +30,7 @@ Para rodar a aplicação com o Docker, você precisará dos seguintes itens:
 - Um clone desse repositório
 
 Após isso, siga os seguintes passos:
+1. Crie um arquivo chamado ***application.properties*** e coloque-o no diretório "*src/main/resources*". Nele, você deverá preencher as informações de autenticação espelhando-se no arquivo "*[application.properties.sample](./src/main/resources/application.properties.sample)*", localizado em "*src/main/resources/application.properties.sample*"
+2. Abra um terminal na pasta raiz do repositório
+3. Rode o comando `docker-compose up -d`
+4. Veja a aplicação sendo executada no Docker Desktop.
