@@ -8,6 +8,7 @@ import com.google.inject.Injector;
 
 import br.com.edusoft.testejava.container.Container;
 import br.com.edusoft.testejava.modules.aluno.datasources.IFetchAlunos;
+import br.com.edusoft.testejava.modules.aluno.datasources.IFetchGravaResultadoToken;
 import br.com.edusoft.testejava.modules.aluno.entities.IAlunoEntity;
 import br.com.edusoft.testejava.modules.aluno.mappers.GravarResultadoMapper;
 import br.com.edusoft.testejava.modules.aluno.models.ConsultaAlunos;

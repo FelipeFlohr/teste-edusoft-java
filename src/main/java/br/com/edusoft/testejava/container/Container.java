@@ -4,10 +4,14 @@ import com.google.inject.AbstractModule;
 
 import br.com.edusoft.testejava.modules.aluno.datasources.IFetchAlunoToken;
 import br.com.edusoft.testejava.modules.aluno.datasources.IFetchAlunos;
+import br.com.edusoft.testejava.modules.aluno.datasources.IFetchGravaResultadoToken;
 import br.com.edusoft.testejava.modules.aluno.datasources.impl.FetchAlunoTokenImpl;
 import br.com.edusoft.testejava.modules.aluno.datasources.impl.FetchAlunosImpl;
+import br.com.edusoft.testejava.modules.aluno.datasources.impl.FetchGravaResultadoTokenImpl;
 import br.com.edusoft.testejava.modules.aluno.entities.IAlunoEntity;
 import br.com.edusoft.testejava.modules.aluno.entities.impl.AlunoEntityProvider;
+import br.com.edusoft.testejava.modules.aluno.services.IAlunoService;
+import br.com.edusoft.testejava.modules.aluno.services.impl.AlunoServiceImpl;
 import br.com.edusoft.testejava.modules.env.IEnvironmentSettings;
 import br.com.edusoft.testejava.modules.env.impl.EnvironmentSettingsImpl;
 import br.com.edusoft.testejava.modules.http.services.ISyncHttpService;
@@ -33,9 +37,13 @@ public class Container extends AbstractModule {
 		// Aluno
 		bind(IFetchAlunoToken.class)
 			.to(FetchAlunoTokenImpl.class);
+		bind(IFetchGravaResultadoToken.class)
+			.to(FetchGravaResultadoTokenImpl.class);
 		bind(IFetchAlunos.class)
 			.to(FetchAlunosImpl.class);
 		bind(IAlunoEntity.class)
 			.toProvider(AlunoEntityProvider.class);
+		bind(IAlunoService.class)
+			.to(AlunoServiceImpl.class);
 	}
 }
