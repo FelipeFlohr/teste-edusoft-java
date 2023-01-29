@@ -1,6 +1,11 @@
 # Teste Edusoft - Java
 Repositório contendo o teste da Edusoft para a vaga de Denseolvedor Java Júnior.
 
+# Índice
+- [1. Relatório de execução](#1-relatório-de-execução)
+- [2. Como rodar a aplicação (sem Docker)](#2-como-rodar-a-aplicação-sem-docker)
+- [3. Como rodar a aplicação (com Docker)](#3-como-rodar-a-aplicação-com-docker)
+
 ## 1. Relatório de execução:
 
 - **Tempo gasto em horas**: aproximadamente 16 horas gastas no decorrer de dois dias.
