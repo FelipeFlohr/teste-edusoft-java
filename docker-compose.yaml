@@ -1,0 +1,8 @@
+version: '3.9'
+
+services:
+  teste-java:
+    image: edusoft/teste-java:1.0.0
+    container_name: testejava
+    build:
+      dockerfile: Dockerfile
