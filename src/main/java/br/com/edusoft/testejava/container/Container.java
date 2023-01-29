@@ -6,6 +6,8 @@ import br.com.edusoft.testejava.modules.aluno.datasources.IFetchAlunoToken;
 import br.com.edusoft.testejava.modules.aluno.datasources.IFetchAlunos;
 import br.com.edusoft.testejava.modules.aluno.datasources.impl.FetchAlunoTokenImpl;
 import br.com.edusoft.testejava.modules.aluno.datasources.impl.FetchAlunosImpl;
+import br.com.edusoft.testejava.modules.aluno.entities.IAlunoEntity;
+import br.com.edusoft.testejava.modules.aluno.entities.impl.AlunoEntityProvider;
 import br.com.edusoft.testejava.modules.env.IEnvironmentSettings;
 import br.com.edusoft.testejava.modules.env.impl.EnvironmentSettingsImpl;
 import br.com.edusoft.testejava.modules.http.services.ISyncHttpService;
@@ -33,5 +35,7 @@ public class Container extends AbstractModule {
 			.to(FetchAlunoTokenImpl.class);
 		bind(IFetchAlunos.class)
 			.to(FetchAlunosImpl.class);
+		bind(IAlunoEntity.class)
+			.toProvider(AlunoEntityProvider.class);
 	}
 }
